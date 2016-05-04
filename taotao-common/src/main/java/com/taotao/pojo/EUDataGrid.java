@@ -2,6 +2,11 @@ package com.taotao.pojo;
 
 import java.util.List;
 
+/**
+ * @author dy
+ * easyUI的数据列表
+ *
+ */
 public class EUDataGrid {
 	private long total;
 	private List<?> rows;
