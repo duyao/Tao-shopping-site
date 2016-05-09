@@ -1,5 +1,6 @@
 package com.taotao.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,9 @@ import com.taotao.pojo.TbItemParam;
 import com.taotao.pojo.TbItemParamExample;
 import com.taotao.pojo.TbItemParamExample.Criteria;
 import com.taotao.reslut.TaotaoResult;
-import com.taotao.service.ItemParmService;
+import com.taotao.service.ItemParamService;
 @Service
-public class ItemParmServiceImpl implements ItemParmService {
+public class ItemParamServiceImpl implements ItemParamService {
 	@Autowired
 	TbItemParamMapper mapper;
 
@@ -42,6 +43,17 @@ public class ItemParmServiceImpl implements ItemParmService {
 			result.setData(list.get(0));
 		}
 		return result;
+	}
+
+	@Override
+	public TaotaoResult saveItemParm(long id, String paramData) {
+		TbItemParam itemParam = new TbItemParam();
+		itemParam.setItemCatId(id);
+		itemParam.setCreated(new Date());
+		itemParam.setUpdated(new Date());
+		itemParam.setParamData(paramData);
+		mapper.insert(itemParam);
+		return TaotaoResult.ok();
 	}
 
 }
