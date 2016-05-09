@@ -27,7 +27,7 @@ public class ItemParamController {
 	@RequestMapping("/query/itemcatid/{cid}")
 	@ResponseBody
 	public TaotaoResult getItemParmById(@PathVariable Long cid){
-		return service.queryCatalogById(cid);
+		return service.queryCatalogByCatId(cid);
 	}
 	
 	@RequestMapping("/save/{cid}")

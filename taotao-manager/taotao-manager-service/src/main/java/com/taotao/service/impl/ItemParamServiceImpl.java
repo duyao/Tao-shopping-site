@@ -24,7 +24,8 @@ public class ItemParamServiceImpl implements ItemParamService {
 	public EUDataGrid getItemParmList(int page, int rows) {
 		TbItemParamExample example = new TbItemParamExample();
 		PageHelper.startPage(page, rows);
-		List<TbItemParam> list = mapper.selectByExample(example);
+		//取出paramData必须用blob，因为是text
+		List<TbItemParam> list = mapper.selectByExampleWithBLOBs(example);
 		EUDataGrid dataGrid = new EUDataGrid();
 		dataGrid.setRows(list);
 		PageInfo<TbItemParam> pageInfo = new PageInfo<>(list);
@@ -33,11 +34,13 @@ public class ItemParamServiceImpl implements ItemParamService {
 	}
 
 	@Override
-	public TaotaoResult queryCatalogById(long id) {
+	public TaotaoResult queryCatalogByCatId(long id) {
 		TbItemParamExample example = new TbItemParamExample();
 		Criteria criteria = example.createCriteria();
-		criteria.andIdEqualTo(id);
-		List<TbItemParam> list = mapper.selectByExample(example);
+		criteria.andItemCatIdEqualTo(id);
+		//byExample不会取出大文本信息
+//		List<TbItemParam> list = mapper.selectByExample(example);
+		List<TbItemParam> list = mapper.selectByExampleWithBLOBs(example);
 		TaotaoResult result = TaotaoResult.ok();
 		if(list != null && list.size() > 0){
 			result.setData(list.get(0));
