@@ -11,7 +11,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<dependencies>
-	<!-- 不需要配置mybatis等，因为已经将mapper引入 -->
+		<!-- 不需要配置mybatis等，因为已经将mapper引入 -->
 		<dependency>
 			<groupId>com.taotao</groupId>
 			<artifactId>taotao-manager-mapper</artifactId>
@@ -27,7 +27,7 @@
 			<artifactId>taotao-common</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		
+
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -59,6 +59,12 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>jsp-api</artifactId>
 			<scope>provided</scope>
+		</dependency>
+		<!-- junit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 
