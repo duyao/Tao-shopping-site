@@ -47,6 +47,7 @@ public class ContentCateSeviceImpl implements ContentCateService {
 		category.setSortOrder(1);
 		category.setStatus(1);
 		//如何获取添加节点的id？
+		//在mybatis中加入<selectKey>
 		
 		//2.修改父节点
 		TbContentCategory parent = mapper.selectByPrimaryKey(parentId);
@@ -56,6 +57,24 @@ public class ContentCateSeviceImpl implements ContentCateService {
 		
 		mapper.insert(category);
 		return TaotaoResult.ok(category);
+	}
+	
+	@Override
+	public TaotaoResult updateNode(long id, String name) {
+		TbContentCategory category = mapper.selectByPrimaryKey(id);
+		category.setName(name);
+		mapper.updateByPrimaryKey(category);
+		return TaotaoResult.ok(category);
+	}
+	@Override
+	public TaotaoResult deleteNode(long parentId, long id) {
+		mapper.deleteByPrimaryKey(id);
+		TbContentCategory parent = mapper.selectByPrimaryKey(parentId);
+		if(parent.getIsParent()){
+			parent.setIsParent(false);
+		}
+		mapper.updateByPrimaryKey(parent);
+		return TaotaoResult.ok(parent);
 	}
 	
 
