@@ -1,6 +1,7 @@
 package com.taotao.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,28 @@ public class ContentCateSeviceImpl implements ContentCateService {
 			result.add(node);
 		}
 		return result;
+	}
+	@Override
+	public TaotaoResult addNode(long parentId, String name) {
+		//1.添加当前结点
+		TbContentCategory category = new TbContentCategory();
+		category.setParentId(parentId);
+		category.setName(name);
+		category.setCreated(new Date());
+		category.setUpdated(new Date());
+		category.setIsParent(false);
+		category.setSortOrder(1);
+		category.setStatus(1);
+		//如何获取添加节点的id？
+		
+		//2.修改父节点
+		TbContentCategory parent = mapper.selectByPrimaryKey(parentId);
+		if(!parent.getIsParent()){
+			parent.setIsParent(true);
+		}
+		
+		mapper.insert(category);
+		return TaotaoResult.ok(category);
 	}
 	
 

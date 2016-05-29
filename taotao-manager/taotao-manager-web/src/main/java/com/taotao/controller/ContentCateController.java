@@ -26,6 +26,11 @@ public class ContentCateController {
 		
 	}
 	
-	
+	@RequestMapping("/create")
+	public TaotaoResult createContentCate(Long parentId, String name){
+
+		return contentCateService.addNode(parentId, name);
+		
+	}
 
 }

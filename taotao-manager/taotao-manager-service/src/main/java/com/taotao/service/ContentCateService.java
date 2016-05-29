@@ -7,5 +7,6 @@ import com.taotao.reslut.TaotaoResult;
 
 public interface ContentCateService {
 	public List<EUTreeNode> getContentCateList(long parentId);
+	public TaotaoResult addNode(long parentId,String name);
 
 }
