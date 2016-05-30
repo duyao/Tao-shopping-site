@@ -14,6 +14,7 @@ import com.taotao.pojo.TbContentCategoryExample;
 import com.taotao.pojo.TbContentCategoryExample.Criteria;
 import com.taotao.reslut.TaotaoResult;
 import com.taotao.service.ContentCateService;
+
 @Service
 public class ContentCateSeviceImpl implements ContentCateService {
 
@@ -53,6 +54,7 @@ public class ContentCateSeviceImpl implements ContentCateService {
 		TbContentCategory parent = mapper.selectByPrimaryKey(parentId);
 		if(!parent.getIsParent()){
 			parent.setIsParent(true);
+			mapper.updateByPrimaryKey(parent);
 		}
 		
 		mapper.insert(category);
@@ -67,14 +69,42 @@ public class ContentCateSeviceImpl implements ContentCateService {
 		return TaotaoResult.ok(category);
 	}
 	@Override
-	public TaotaoResult deleteNode(long parentId, long id) {
-		mapper.deleteByPrimaryKey(id);
+	public TaotaoResult deleteNode(long id) {
+		TbContentCategory curNode = mapper.selectByPrimaryKey(id);
+		long parentId = curNode.getParentId();
+		deleteAll(curNode);
+		//查看是否有兄弟，如果没有修改isParent标志
 		TbContentCategory parent = mapper.selectByPrimaryKey(parentId);
 		if(parent.getIsParent()){
-			parent.setIsParent(false);
+			TbContentCategoryExample example = new TbContentCategoryExample();
+			Criteria criteria = example.createCriteria();
+			criteria.andParentIdEqualTo(parentId);
+			List<TbContentCategory> list = mapper.selectByExample(example);
+			if(list.size() < 1){
+				parent.setIsParent(false);
+				mapper.updateByPrimaryKey(parent);
+			}
+			
 		}
-		mapper.updateByPrimaryKey(parent);
 		return TaotaoResult.ok(parent);
+	}
+	
+	/**
+	 * 删除该节点及其子节点
+	 * @param node
+	 */
+	public void deleteAll(TbContentCategory node){
+		if(node.getIsParent()){
+			TbContentCategoryExample example = new TbContentCategoryExample();
+			Criteria criteria = example.createCriteria();
+			criteria.andParentIdEqualTo(node.getId());
+			List<TbContentCategory> list = mapper.selectByExample(example);
+			for (TbContentCategory tbContentCategory : list) {
+				deleteAll(tbContentCategory);
+			}
+		}
+		mapper.deleteByPrimaryKey(node.getId());
+		
 	}
 	
 

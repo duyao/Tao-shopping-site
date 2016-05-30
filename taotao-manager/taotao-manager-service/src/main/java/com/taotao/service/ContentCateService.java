@@ -9,6 +9,6 @@ public interface ContentCateService {
 	public List<EUTreeNode> getContentCateList(long parentId);
 	public TaotaoResult addNode(long parentId,String name);
 	public TaotaoResult updateNode(long id,String name);
-	public TaotaoResult deleteNode(long parentId,long id);
+	public TaotaoResult deleteNode(long id);
 
 }
